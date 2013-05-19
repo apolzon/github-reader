@@ -48,6 +48,7 @@
     app_label.frame = CGRectIntegral(app_label.frame);
     
     UITextField* username_text_field = [[UITextField alloc] init];
+    username_text_field.delegate = (id)self;
     username_text_field.borderStyle = UITextBorderStyleRoundedRect;
     username_text_field.autocapitalizationType = UITextAutocapitalizationTypeNone;
     username_text_field.keyboardType = UIKeyboardTypeEmailAddress;
@@ -65,6 +66,7 @@
     username_text_field.frame = username_frame;
     
     UITextField* password_text_field = [[UITextField alloc] init];
+    password_text_field.delegate = (id)self;
     password_text_field.borderStyle = UITextBorderStyleRoundedRect;
     password_text_field.autocapitalizationType = UITextAutocapitalizationTypeNone;
     password_text_field.secureTextEntry = YES;
@@ -82,9 +84,7 @@
     password_text_field.frame = password_frame;
 
     UIButton* login_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    login_button.backgroundColor = [UIColor blueColor];
     [login_button setTitle:@"Do Login" forState:UIControlStateNormal];
-//    [login_button setTitle:@"Logging in..." forState:UIControlStateHighlighted];
     [login_button sizeToFit];
     CGRect login_frame = login_button.frame;
     login_frame.origin.x = 20;
@@ -100,6 +100,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField*)textField {
+    [textField resignFirstResponder];
+    return NO;
 }
 
 @end
