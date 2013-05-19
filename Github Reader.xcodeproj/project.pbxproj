@@ -16,6 +16,7 @@
 		92744EB21749789E00807C90 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 92744EB11749789E00807C90 /* Default.png */; };
 		92744EB41749789E00807C90 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92744EB31749789E00807C90 /* Default@2x.png */; };
 		92744EB61749789E00807C90 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92744EB51749789E00807C90 /* Default-568h@2x.png */; };
+		92744EBE17497CCD00807C90 /* GHR_RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92744EBD17497CCD00807C90 /* GHR_RootViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		92744EB11749789E00807C90 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		92744EB31749789E00807C90 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		92744EB51749789E00807C90 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		92744EBC17497CCD00807C90 /* GHR_RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHR_RootViewController.h; sourceTree = "<group>"; };
+		92744EBD17497CCD00807C90 /* GHR_RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHR_RootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +83,8 @@
 			children = (
 				92744EAE1749789E00807C90 /* GHRAppDelegate.h */,
 				92744EAF1749789E00807C90 /* GHRAppDelegate.m */,
+				92744EBC17497CCD00807C90 /* GHR_RootViewController.h */,
+				92744EBD17497CCD00807C90 /* GHR_RootViewController.m */,
 				92744EA61749789E00807C90 /* Supporting Files */,
 			);
 			path = "Github Reader";
@@ -167,6 +172,7 @@
 			files = (
 				92744EAC1749789E00807C90 /* main.m in Sources */,
 				92744EB01749789E00807C90 /* GHRAppDelegate.m in Sources */,
+				92744EBE17497CCD00807C90 /* GHR_RootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,105 @@
+//
+//  GHR_RootViewController.m
+//  Github Reader
+//
+//  Created by Christopher Apolzon on 5/19/13.
+//  Copyright (c) 2013 Apples on the Tree. All rights reserved.
+//
+
+#import "GHR_RootViewController.h"
+
+@interface GHR_RootViewController ()
+
+@end
+
+@implementation GHR_RootViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void) loadView {
+    UIWindow* app_window = [[UIApplication sharedApplication] keyWindow];
+    UIView* base_view = [[UIView alloc] initWithFrame:[app_window frame]];
+    base_view.backgroundColor = [UIColor greenColor];
+    self.view = base_view;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    UILabel* app_label = [[UILabel alloc] init];
+    [self.view addSubview:app_label];
+    app_label.text = @"Github Reader Application";
+    app_label.autoresizingMask = (
+        UIViewAutoresizingFlexibleLeftMargin |
+        UIViewAutoresizingFlexibleRightMargin |
+        UIViewAutoresizingFlexibleTopMargin |
+        UIViewAutoresizingFlexibleBottomMargin
+    );
+    [app_label sizeToFit];
+    app_label.backgroundColor = [UIColor clearColor];
+    app_label.center = CGPointMake(CGRectGetMidX(self.view.frame), 25);
+    app_label.frame = CGRectIntegral(app_label.frame);
+    
+    UITextField* username_text_field = [[UITextField alloc] init];
+    username_text_field.borderStyle = UITextBorderStyleRoundedRect;
+    username_text_field.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    username_text_field.keyboardType = UIKeyboardTypeEmailAddress;
+    username_text_field.backgroundColor = [UIColor whiteColor];
+    username_text_field.placeholder = @"GitHub Username";
+    username_text_field.autoresizingMask = (
+        UIViewAutoresizingFlexibleBottomMargin |
+        UIViewAutoresizingFlexibleRightMargin
+    );
+    [username_text_field sizeToFit];
+    CGRect username_frame = username_text_field.frame;
+    username_frame.origin.y = app_label.frame.origin.y + 50;
+    username_frame.origin.x = 20;
+    username_frame.size.width = (self.view.frame.size.width*2/3);
+    username_text_field.frame = username_frame;
+    
+    UITextField* password_text_field = [[UITextField alloc] init];
+    password_text_field.borderStyle = UITextBorderStyleRoundedRect;
+    password_text_field.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    password_text_field.secureTextEntry = YES;
+    password_text_field.backgroundColor = [UIColor whiteColor];
+    password_text_field.placeholder = @"GitHub Password";
+    password_text_field.autoresizingMask = (
+        UIViewAutoresizingFlexibleBottomMargin |
+        UIViewAutoresizingFlexibleRightMargin
+    );
+    [password_text_field sizeToFit];
+    CGRect password_frame = password_text_field.frame;
+    password_frame.origin.y = username_frame.origin.y + username_frame.size.height + 10;
+    password_frame.origin.x = 20;
+    password_frame.size.width = username_frame.size.width;
+    password_text_field.frame = password_frame;
+
+    UIButton* login_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    login_button.backgroundColor = [UIColor blueColor];
+    [login_button setTitle:@"Do Login" forState:UIControlStateNormal];
+//    [login_button setTitle:@"Logging in..." forState:UIControlStateHighlighted];
+    [login_button sizeToFit];
+    CGRect login_frame = login_button.frame;
+    login_frame.origin.x = 20;
+    login_frame.origin.y = password_frame.origin.y + password_frame.size.height + 20;
+    login_button.frame = login_frame;
+    
+    [self.view addSubview: username_text_field];
+    [self.view addSubview: password_text_field];
+    [self.view addSubview: login_button];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
