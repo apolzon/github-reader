@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <UAGithubEngine/UAGithubEngine.h>
 
 @interface GHR_RootViewController : UIViewController
-
+@property (nonatomic, readwrite) UAGithubEngine* gh_engine;
 @end
