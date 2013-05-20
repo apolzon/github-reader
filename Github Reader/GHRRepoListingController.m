@@ -10,8 +10,8 @@
 #import "GHR_RootViewController.h"
 #import <UAGithubEngine/UAGithubEngine.h>
 
-@interface GHRRepoListingController ()
-
+@interface GHRRepoListingController () <UITableViewDataSource>
+    @property (nonatomic, readwrite) NSMutableArray* repos;
 @end
 
 @implementation GHRRepoListingController
@@ -33,40 +33,52 @@
     label.text = @"Your Repositories";
     [label sizeToFit];
     [repo_view addSubview:label];
+
+    UITableView* tv = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+    tv.dataSource = self;
+    [repo_view addSubview:tv];
+    
     self.view = repo_view;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIScrollView* scroll_view = [[UIScrollView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
 
     UAGithubEngine* engine = ((GHR_RootViewController*)self.presentingViewController).gh_engine;
     [engine repositoriesWithSuccess:^(id response) {
-        
         NSMutableArray* repo_names = [NSMutableArray arrayWithCapacity:[response count]];
-        NSInteger last_y = 0;
         for(NSDictionary* repo in response) {
             [repo_names addObject:[repo objectForKey:@"full_name"]];
-            UILabel* repo_name = [[UILabel alloc] init];
-            repo_name.text = [repo objectForKey:@"full_name"];
-            [repo_name sizeToFit];
-            CGRect label_frame = repo_name.frame;
-            label_frame.origin.x = 10;
-            label_frame.origin.y = label_frame.size.height * [response indexOfObject:repo];
-            last_y = label_frame.origin.y;
-            repo_name.frame = label_frame;
-            [scroll_view addSubview: repo_name];
         }
-        
-        CGSize scroll_size = scroll_view.bounds.size;
-        scroll_size.height = last_y + 50;
-        scroll_view.contentSize = scroll_size;
-        [self.view addSubview:scroll_view];
-        
+        self.repos = repo_names;
     } failure:^(NSError* err) {
         NSLog(@"GITHUB FAIL -- %@", err);
     }];
+}
+
+// UITableViewDatasource Messages:
+- (UITableViewCell*)tableView: (UITableView*) table_view cellForRowAtIndexPath:(NSIndexPath *)index_path {
+    static NSString* CellId = @"RepoCell";
+    UITableViewCell* cell = [table_view dequeueReusableCellWithIdentifier:CellId];
+    if (cell == nil) {
+        // create a new cell
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellId];
+    }
+    UILabel* label = [[UILabel alloc] init];
+    NSString* repo_name = [self.repos objectAtIndex: index_path.item];
+    if (repo_name != nil) {
+        label.text = repo_name;
+    } else {
+        label.text = @"THIS IS AN EMPTY CELL";
+    }
+    [label sizeToFit];
+    [cell.contentView addSubview:label];
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.repos count];
 }
 
 - (void)didReceiveMemoryWarning
