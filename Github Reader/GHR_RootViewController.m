@@ -7,6 +7,7 @@
 //
 
 #import "GHR_RootViewController.h"
+#import <UAGithubEngine/UAGithubEngine.h>
 
 @interface GHR_RootViewController ()
 
@@ -48,6 +49,7 @@
     app_label.frame = CGRectIntegral(app_label.frame);
     
     UITextField* username_text_field = [[UITextField alloc] init];
+    username_text_field.tag = 1;
     username_text_field.delegate = (id)self;
     username_text_field.borderStyle = UITextBorderStyleRoundedRect;
     username_text_field.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -66,6 +68,7 @@
     username_text_field.frame = username_frame;
     
     UITextField* password_text_field = [[UITextField alloc] init];
+    password_text_field.tag = 2;
     password_text_field.delegate = (id)self;
     password_text_field.borderStyle = UITextBorderStyleRoundedRect;
     password_text_field.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -84,8 +87,12 @@
     password_text_field.frame = password_frame;
 
     UIButton* login_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    login_button.tag = 3;
     [login_button setTitle:@"Do Login" forState:UIControlStateNormal];
     [login_button sizeToFit];
+
+    [login_button addTarget:self action:@selector(handleClick:) forControlEvents:UIControlEventTouchUpInside];
+    
     CGRect login_frame = login_button.frame;
     login_frame.origin.x = 20;
     login_frame.origin.y = password_frame.origin.y + password_frame.size.height + 20;
@@ -94,6 +101,7 @@
     [self.view addSubview: username_text_field];
     [self.view addSubview: password_text_field];
     [self.view addSubview: login_button];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -102,8 +110,37 @@
     // Dispose of any resources that can be recreated.
 }
 
+// UIButton action handler:
+- (void)handleClick:(id)button {
+    NSLog(@"HANDLED CLICK!");
+    UITextField* username_field = (UITextField*)[self.view viewWithTag:1];
+    UITextField* password_field = (UITextField*)[self.view viewWithTag:2];
+    UIButton* login_button = (UIButton*)[self.view viewWithTag:3];
+
+    NSLog(@"attempting to contact github!");
+    NSLog(@"username val: %@", username_field.text);
+    NSLog(@"password val: %@", password_field.text);
+    
+    UAGithubEngine* engine = [[UAGithubEngine alloc] initWithUsername:username_field.text password:password_field.text withReachability:YES];
+    [engine repositoriesWithSuccess:^(id response) {
+        NSLog(@"LOOPING");
+        NSMutableArray* repo_names = [NSMutableArray arrayWithCapacity:[response count]];
+        for(NSDictionary* repo in response) {
+            [repo_names addObject:[repo objectForKey:@"full_name"]];
+        }
+        NSLog(@"FINISHED LOOP");
+        NSLog(@"repo names: %@", repo_names);
+        [login_button setTitle:@"SUCCESS" forState:UIControlStateNormal];
+    } failure:^(NSError* err) {
+        NSLog(@"GITHUB FAIL -- %@", err);
+        [login_button setTitle:@"FAILURE" forState:UIControlStateNormal];
+    }];
+}
+
+// UITextFieldDelegate methods:
 - (BOOL)textFieldShouldReturn:(UITextField*)textField {
     [textField resignFirstResponder];
+    [self handleClick:nil];
     return NO;
 }
 
